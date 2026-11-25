@@ -48,4 +48,35 @@ CI (`.github/workflows/verification.yml`, ubuntu-latest) does the above, adds th
 
 ## Real CI output
 
-<!-- CI-OUTPUT -->
+From [run 45665132329](https://github.com/hamza2829/instrument-verification-lab/actions/runs/45665132329) (ubuntu-latest), copied from the log:
+
+```
+prototype: 45/65 step executions passed (5 repeats of 13 steps)
+pre-series: 58/65 step executions passed (5 repeats of 13 steps)
+series: 65/65 step executions passed (5 repeats of 13 steps)
+======================== 67 passed, 2 warnings in 1.88s ========================
+PASS  load INT-1
+PASS  load INT-2
+PASS  run started
+PASS  temperature in 37.0 +/- 0.5
+PASS  run stopped
+PASS  run persisted
+PASS  door fault raises E103
+PASS  reset recovers
+  "max_deviation": 0.192,
+  "passed": true
+
+| prototype  | 65 | 45 | 69%  |
+| pre-series | 65 | 58 | 89%  |
+| series     | 65 | 65 | 100% |
+| REQ-004 | Temperature stability | high | fail | flaky | pass | 13/13 | DEF-PRESERIES-A04, DEF-PROTOTYPE-A04 |
+| REQ-006 | Door interlock        | high | fail | pass  | pass | 15/15 | DEF-PROTOTYPE-A06 |
+| REQ-012 | Rack labelling        | low  | fail | fail  | pass | 0/0   | DEF-PRESERIES-M03, DEF-PROTOTYPE-M03 |
+flaky:     | pre-series | A04 | REQ-004 | 60% |
+recurring: | temp_stability | REQ-004 | prototype, pre-series |
+recurring: | Inspect rack position labels | REQ-012 | prototype, pre-series |
+6 defect reports written to out/defects
+GATE PASSED: every requirement has a passing test
+```
+
+The full report (Markdown and HTML), the defect list and the raw results are in the run's `verification-report` artifact and in its job summary.
