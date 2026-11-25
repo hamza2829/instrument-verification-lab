@@ -1,0 +1,6 @@
+tester: QA tester 1
+date: 2026-10-02
+answers:
+  M01: {result: pass, observed: "State RUNNING, samples S001 listed", evidence: "evidence/prototype/M01-console.png"}
+  M02: {result: fail, observed: "Error code shown but text missing and not highlighted", evidence: "evidence/prototype/M02-console-error.png"}
+  M03: {result: fail, observed: "Labels 5-8 missing on prototype rack", evidence: "evidence/prototype/M03-rack.jpg"}

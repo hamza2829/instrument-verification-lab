@@ -1,0 +1,55 @@
+name: Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies and Playwright browser
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Run simulated builds (prototype, pre-series, series)
+        run: |
+          for build in prototype pre-series series; do
+            python -m ivlab run-build --build "$build" --repeats 5 --out out/results
+          done
+      - name: pytest (unit, API, verification tooling, Playwright UI, scripts)
+        run: python -m pytest -v --req-report out/pytest-reqs.json --junitxml out/pytest-junit.xml
+      - name: API integration and repetitive checks against a live server
+        run: |
+          IVLAB_BUILD=series uvicorn ivlab.api:app --port 8000 > out/server.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:8000/api/status > /dev/null && break; sleep 1; done
+          python scripts/api_integration.py http://127.0.0.1:8000
+          python scripts/repetitive_checks.py http://127.0.0.1:8000 --cycles 25 --out out/repetitive.json
+      - name: Report, defect list and release gate
+        run: |
+          python -m ivlab analyze --results out/results --pytest out/pytest-reqs.json --out out --gate
+          cat out/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: verification-report
+          path: |
+            out/report.md
+            out/report.html
+            out/analysis.json
+            out/defects/
+            out/results/
+            out/pytest-*.json
+            out/pytest-junit.xml
+            out/repetitive.json

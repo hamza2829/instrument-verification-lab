@@ -1,0 +1,6 @@
+tester: QA tester 2
+date: 2026-11-20
+answers:
+  M01: {result: pass, observed: "State RUNNING, samples listed", evidence: "evidence/series/M01-console.png"}
+  M02: {result: pass, observed: "E101 Over-temperature shown in red", evidence: "evidence/series/M02-console-error.png"}
+  M03: {result: pass, observed: "Labels 1-8 present and readable", evidence: "evidence/series/M03-rack.jpg"}

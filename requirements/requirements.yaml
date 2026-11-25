@@ -1,0 +1,13 @@
+requirements:
+  - {id: REQ-001, priority: high, title: Run lifecycle, text: "A loaded instrument shall start and stop a run; the run is recorded as COMPLETED and the instrument returns to IDLE."}
+  - {id: REQ-002, priority: medium, title: Start interlock without samples, text: "Starting a run with no samples loaded shall be rejected."}
+  - {id: REQ-003, priority: medium, title: Rack capacity, text: "The rack shall hold 8 samples; a 9th sample shall be rejected."}
+  - {id: REQ-004, priority: high, title: Temperature stability, text: "During a run the chamber temperature shall stay within 37.0 +/- 0.5 C."}
+  - {id: REQ-005, priority: high, title: Over-temperature alarm, text: "Temperature >= 42 C shall raise error E101 and abort the run."}
+  - {id: REQ-006, priority: high, title: Door interlock, text: "Opening the door during a run shall raise error E103 and abort the run."}
+  - {id: REQ-007, priority: high, title: Sensor dropout detection, text: "Loss of the temperature signal shall raise error E102 and abort the run."}
+  - {id: REQ-008, priority: medium, title: Error recovery, text: "After faults are cleared, a reset shall return the instrument to IDLE and allow a new run."}
+  - {id: REQ-009, priority: high, title: Result persistence, text: "Every completed run shall be stored in the instrument database."}
+  - {id: REQ-010, priority: medium, title: Audit log, text: "Sample handling and run start/stop shall be written to the event log."}
+  - {id: REQ-011, priority: low, title: Operator console, text: "The operator console shall show state, active error and loaded samples."}
+  - {id: REQ-012, priority: low, title: Rack labelling, text: "Rack positions shall carry readable position labels 1-8."}
